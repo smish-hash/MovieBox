@@ -9,8 +9,8 @@ import androidx.compose.ui.res.dimensionResource
 import com.example.moviebox.R
 
 @Composable
-fun MovieSynopsisScreen(onBookTicketClicked: () -> Unit, modifier: Modifier) {
+fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit, modifier: Modifier) {
     Column() {
-        Text(text = "Welcome to synopsis page", modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium )))
+        Text(text = "Welcome to synopsis page - $movieId", modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium )))
     }
 }
