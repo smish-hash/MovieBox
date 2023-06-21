@@ -1,16 +1,18 @@
 package com.example.moviebox.ui.screen.MovieList
 
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,37 +23,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
-import com.example.moviebox.R
 import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.util.Constants
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieCard(
+    onMovieClick: (Int?) -> Unit,
     movie: Result
 ) {
-    Surface(modifier = Modifier.padding(16.dp)) {
+    Card(
+        elevation = CardDefaults.cardElevation(4.dp),
+        modifier = Modifier.padding(16.dp),
+        shape = RoundedCornerShape(size = 12.dp),
+        onClick = {onMovieClick(movie.id)}
+    ) {
+
         Column {
-            Image(
-                painterResource(id = R.drawable.nature),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(width = 250.dp, height = 300.dp)
-                    .padding(bottom = 8.dp)
-                    .clip(RoundedCornerShape(10.dp))
-            )
-            /*CoilImage(
-                imageModel = { Constants.BASE_URL+movie.posterPath },
+            val imageUrl = Constants.BASE_IMAGE_URL+movie.posterPath
+
+            CoilImage(
+                imageModel = { imageUrl },
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
                 )
-            )*/
+            )
 
             Row(modifier = Modifier
                 .width(250.dp)

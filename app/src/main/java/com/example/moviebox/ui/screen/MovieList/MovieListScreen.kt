@@ -23,7 +23,7 @@ import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.ui.state.MovieListState
 
 @Composable
-fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> Unit, onMovieClicked: () -> Unit, modifier: Modifier) {
+fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> Unit, onMovieClicked: (Int?) -> Unit, modifier: Modifier) {
     Column(verticalArrangement = Arrangement.Center) {
         Button(onClick = {
             onFetchMovieClicked()
@@ -34,17 +34,6 @@ fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> U
                 vertical = dimensionResource(R.dimen.padding_medium)
             )) {
             Text(text = "Tap Me")
-        }
-
-        Button(onClick = {
-            onMovieClicked()
-        }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = dimensionResource(R.dimen.padding_medium),
-                vertical = dimensionResource(R.dimen.padding_medium)
-            )) {
-            Text(text = "Go to synopsis page")
         }
 
         when (movieListState) {
@@ -74,7 +63,10 @@ fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> U
                     modifier = Modifier.padding(16.dp)
                 )
                 movieListState.data.results?.let {
-                    MovieCardGrid(movies = it)
+                    MovieCardGrid(
+                        onMovieClicked = {onMovieClicked(it)},
+                        movies = it
+                    )
                 }
             }
         }
@@ -84,6 +76,7 @@ fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> U
 @Composable
 fun MovieCardGrid(
     movies: List<Result>,
+    onMovieClicked: (Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -94,7 +87,10 @@ fun MovieCardGrid(
             .fillMaxWidth()
     ) {
         items(movies) { movie ->
-            MovieCard(movie)
+            MovieCard(
+                onMovieClick = {onMovieClicked(it)},
+                movie
+            )
         }
     }
 }

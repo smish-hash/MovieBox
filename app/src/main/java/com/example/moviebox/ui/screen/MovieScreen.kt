@@ -62,6 +62,7 @@ fun MovieBoxAppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieBoxApp(
     movieListViewModel: MovieListViewModel = viewModel(),

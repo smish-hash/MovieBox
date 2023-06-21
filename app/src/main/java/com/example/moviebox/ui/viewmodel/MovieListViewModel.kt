@@ -32,7 +32,7 @@ class MovieListViewModel @Inject constructor(
                 _popularMoviesState.value = MovieListState.Success(movies)
             } catch (e: Exception) {
                 // Handle error
-                onErrorOccurred(e.localizedMessage)
+                onErrorOccurred(e.localizedMessage as String)
             }
         }
     }
