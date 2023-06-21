@@ -7,8 +7,8 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface MovieListApi {
-    @Headers("Authorization: Bearer+${Constants.AUTH_KEY}")
-    @GET("/popular")
+    @Headers("Authorization: Bearer ${Constants.AUTH_KEY}")
+    @GET("popular")
     suspend fun getMovies(
         @Query("page")
         page: Int,

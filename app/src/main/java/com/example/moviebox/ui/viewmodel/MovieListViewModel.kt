@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviebox.data.model.movielist.MovieListModel
 import com.example.moviebox.data.repository.MovieListRepository
+import com.example.moviebox.ui.state.MovieListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,17 +17,10 @@ class MovieListViewModel @Inject constructor(
     private val movieListRepository: MovieListRepository
 ): ViewModel() {
 
-    sealed class MovieListState {
-        object Empty : MovieListState()
-        object Loading : MovieListState()
-        class Success(val data: MovieListModel) : MovieListState()
-        class Error(val message: String) : MovieListState()
-    }
-
     private val _popularMoviesState = MutableStateFlow<MovieListState>(MovieListState.Empty)
     val popularMoviesState: StateFlow<MovieListState> = _popularMoviesState
 
-    /*init { tbd = later
+    /*init {
         fetchPopularMovies()
     }*/
 
