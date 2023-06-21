@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class CastAndCrewModel(
     @SerializedName("cast")
-    val cast: List<Cast?>? = null,
+    val cast: List<Cast>? = null,
     @SerializedName("crew")
-    val crew: List<Crew?>? = null,
+    val crew: List<Crew>? = null,
     @SerializedName("id")
     val id: Int? = null
 )

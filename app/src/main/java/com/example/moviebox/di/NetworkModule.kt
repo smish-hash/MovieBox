@@ -43,6 +43,9 @@ object NetworkModule {
     fun provideMovieCastCrewService(retrofit: Retrofit): CastAndCrewApi {
         return retrofit.create(CastAndCrewApi::class.java)
     }
+
+    @Provides
+    @Singleton
     fun provideMovieDetailService(retrofit: Retrofit): MovieDetailApi {
         return retrofit.create(MovieDetailApi::class.java)
     }
