@@ -20,22 +20,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
 
-enum class MovieScreen(@StringRes val title: Int) {
-    MovieList(title = R.string.app_name),
-    MovieSynopsis(title = R.string.synopsis_page)
+
+sealed class Screen(val title: String, val route: String) {
+    object Home: Screen("Movie Box", "home")
+    object Synopsis: Screen("Synopsis", "detail/{id}")
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieBoxAppBar(
     currentScreen: MovieScreen,
@@ -60,7 +64,7 @@ fun MovieBoxAppBar(
             }
         }
     )
-}
+}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,31 +73,33 @@ fun MovieBoxApp(
     navController: NavHostController = rememberNavController()
 ){
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = MovieScreen.valueOf(
+    /*val currentScreen = MovieScreen.valueOf(
         backStackEntry?.destination?.route ?: MovieScreen.MovieList.name
-    )
+    )*/
 
     Scaffold(
-        topBar = {
+        /*topBar = {
             MovieBoxAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
-        }
+        }*/
     ) { innerPadding ->
         val movieListState by movieListViewModel.popularMoviesState.collectAsState()
         NavHost(
             navController = navController,
-            startDestination = MovieScreen.MovieList.name,
+            startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = MovieScreen.MovieList.name) {
+            composable(route = Screen.Home.route) {
                 MovieListScreen(
                     movieListState = movieListState,
                     onFetchMovieClicked = { movieListViewModel.fetchPopularMovies() },
-                    onMovieClicked = {
-                        navController.navigate(MovieScreen.MovieSynopsis.name)
+                    onMovieClicked = {movieId ->
+                        movieId?.let {
+                            navController.navigate("detail/$it")
+                        }
                     },
                     modifier = Modifier
                         .fillMaxSize()
@@ -101,9 +107,15 @@ fun MovieBoxApp(
                 )
             }
 
-            composable(route = MovieScreen.MovieSynopsis.name) {
-                // movie synopsis screen
+            composable(
+                route = Screen.Synopsis.route,
+                arguments = listOf(navArgument("id"){
+                    type = NavType.IntType
+                })
+            ) {
+                val movieId = it.arguments?.getInt("id") ?: -1
                 MovieSynopsisScreen(
+                    movieId,
                     onBookTicketClicked = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxSize()
