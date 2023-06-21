@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.moviebox.base.BaseActivity
 import com.example.moviebox.ui.state.MovieListState
 import com.example.moviebox.ui.theme.MovieBoxTheme
+import com.example.moviebox.ui.viewmodel.CastAndCrewViewModel
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -90,6 +91,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier, listViewModel: MovieLi
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
