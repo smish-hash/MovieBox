@@ -1,5 +1,6 @@
 package com.example.moviebox.di
 
+import com.example.moviebox.data.api.CastAndCrewApi
 import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.api.MovieListApi
 import com.example.moviebox.util.Constants
@@ -35,6 +36,12 @@ object NetworkModule {
     @Singleton
     fun provideMovieListService(retrofit: Retrofit): MovieListApi {
         return retrofit.create(MovieListApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieCastCrewService(retrofit: Retrofit): CastAndCrewApi {
+        return retrofit.create(CastAndCrewApi::class.java)
     }
 
     @Provides
