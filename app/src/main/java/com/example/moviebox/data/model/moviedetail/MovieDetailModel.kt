@@ -8,10 +8,6 @@ data class MovieDetailModel(
     val adult: Boolean? = null,
     @SerializedName("backdrop_path")
     val backdropPath: String? = null,
-    @SerializedName("belongs_to_collection")
-    val belongsToCollection: BelongsToCollection? = null,
-    @SerializedName("budget")
-    val budget: Int? = null,
     @SerializedName("genres")
     val genres: List<Genre?>? = null,
     @SerializedName("homepage")
@@ -32,8 +28,6 @@ data class MovieDetailModel(
     val posterPath: String? = null,
     @SerializedName("release_date")
     val releaseDate: String? = null,
-    @SerializedName("revenue")
-    val revenue: Int? = null,
     @SerializedName("runtime")
     val runtime: Int? = null,
     @SerializedName("spoken_languages")
@@ -44,8 +38,6 @@ data class MovieDetailModel(
     val tagline: String? = null,
     @SerializedName("title")
     val title: String? = null,
-    @SerializedName("video")
-    val video: Boolean? = null,
     @SerializedName("vote_average")
     val voteAverage: Double? = null,
     @SerializedName("vote_count")
