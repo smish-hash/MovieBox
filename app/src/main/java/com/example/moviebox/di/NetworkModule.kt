@@ -2,6 +2,7 @@ package com.example.moviebox.di
 
 import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.api.MovieListApi
+import com.example.moviebox.data.api.MovieReviewApi
 import com.example.moviebox.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -41,5 +42,12 @@ object NetworkModule {
     @Singleton
     fun provideMovieDetailService(retrofit: Retrofit): MovieDetailApi {
         return retrofit.create(MovieDetailApi::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideMovieReviewService(retrofit: Retrofit): MovieReviewApi {
+        return retrofit.create(MovieReviewApi::class.java)
     }
 }
