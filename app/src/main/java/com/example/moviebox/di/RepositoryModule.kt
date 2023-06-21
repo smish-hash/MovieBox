@@ -1,6 +1,8 @@
 package com.example.moviebox.di
 
+import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.api.MovieListApi
+import com.example.moviebox.data.repository.MovieDetailRepository
 import com.example.moviebox.data.repository.MovieListRepository
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,13 @@ object RepositoryModule {
         movieListApi: MovieListApi
     ): MovieListRepository {
         return MovieListRepository(movieListApi)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieDetailRepository(
+        movieDetailApi: MovieDetailApi
+    ): MovieDetailRepository {
+        return MovieDetailRepository(movieDetailApi)
     }
 }
