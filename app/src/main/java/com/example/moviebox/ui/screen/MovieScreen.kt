@@ -31,6 +31,7 @@ import androidx.navigation.navArgument
 import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
+import com.example.moviebox.ui.viewmodel.CastAndCrewViewModel
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
 
 
@@ -77,16 +78,10 @@ fun MovieBoxApp(
         backStackEntry?.destination?.route ?: MovieScreen.MovieList.name
     )*/
 
-    Scaffold(
-        /*topBar = {
-            MovieBoxAppBar(
-                currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
-            )
-        }*/
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         val movieListState by movieListViewModel.popularMoviesState.collectAsState()
+
+
         NavHost(
             navController = navController,
             startDestination = Screen.Home.route,
@@ -115,7 +110,7 @@ fun MovieBoxApp(
             ) {
                 val movieId = it.arguments?.getInt("id") ?: -1
                 MovieSynopsisScreen(
-                    movieId,
+                    movieId = movieId,
                     onBookTicketClicked = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxSize()

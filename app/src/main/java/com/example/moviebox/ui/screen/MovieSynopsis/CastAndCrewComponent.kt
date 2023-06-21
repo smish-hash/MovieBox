@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -23,65 +24,102 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moviebox.R
+import com.example.moviebox.data.model.castcrew.Cast
 import com.example.moviebox.data.model.castcrew.CastAndCrewModel
+import com.example.moviebox.data.model.castcrew.Crew
+import com.example.moviebox.util.Constants
+import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
-fun CastAndCrew() {
+fun CastAndCrew(data: CastAndCrewModel) {
     Column(modifier = Modifier) {
         Column() {
-            Text(text = "Test String")
             Divider()
-            CommonCastCrewComponent(modifier = Modifier, "Cast")
+            data.cast?.let { CastComponent(modifier = Modifier, "Cast", it) }
 
             Divider()
-            CommonCastCrewComponent(modifier = Modifier, "Crew")
+            data.crew?.let { CrewComponent(modifier = Modifier, "Crew", it) }
 
         }
     }
 }
 
 @Composable
-fun CommonCastCrewComponent(modifier: Modifier, text: String) {
-//    Column(modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))) {
+fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
+
     Column(modifier = modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp)) {
         Text(text = text)
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)){
-            items(10) {
-                ItemCard(modifier)
+            items(members) {
+                CastCard(it, modifier)
             }
         }
     }
 }
 
+
 @Composable
-//fun ItemCard(modifier: Modifier, member: CastAndCrewModel) {
-fun ItemCard(modifier: Modifier){
+fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
+
+    Column(modifier = modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp)) {
+        Text(text = text)
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)){
+            items(members) {
+                CrewCard(it, modifier)
+            }
+        }
+    }
+}
+@Composable
+fun CastCard(cast: Cast, modifier: Modifier){
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))) {
-        Image(
-            painter = painterResource(id = R.drawable.nature),
-            contentDescription = "Artist Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape),
+        val imageUrl = Constants.BASE_IMAGE_URL+cast.profilePath
+
+        CoilImage(
+            imageModel = { imageUrl },
+            imageOptions = ImageOptions(
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            ),
+            modifier = Modifier.size(64.dp)
+                .clip(CircleShape)
         )
-        Text(text = "Prabhas")
-        Text(text = "as Prabhas", color = Color.Gray, fontSize = 10.sp)
+        cast.name?.let { Text(text = it) }
+        cast.character?.let { Text(text = it, color = Color.Gray, fontSize = 10.sp) }
     }
 }
 
+@Composable
+fun CrewCard(crew: Crew, modifier: Modifier){
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))) {
+        val imageUrl = Constants.BASE_IMAGE_URL+crew.profilePath
+
+        CoilImage(
+            imageModel = { imageUrl },
+            imageOptions = ImageOptions(
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            ),
+            modifier = Modifier.size(64.dp)
+                .clip(CircleShape)
+        )
+        crew.name?.let { Text(text = it) }
+        crew.job?.let { Text(text = it, color = Color.Gray, fontSize = 10.sp) }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommonCastCrewComponent() {
     Column() {
         Text(text = "Test String")
         Divider()
-        CommonCastCrewComponent(modifier = Modifier, "Cast")
+        CastComponent(modifier = Modifier, "Cast", emptyList())
 
         Divider()
-        CommonCastCrewComponent(modifier = Modifier, "Crew")
+        CrewComponent(modifier = Modifier, "Crew", emptyList())
 
     }
 }
