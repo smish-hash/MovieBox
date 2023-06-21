@@ -1,6 +1,7 @@
 package com.example.moviebox.di
 
 import com.example.moviebox.data.api.CastAndCrewApi
+import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.api.MovieListApi
 import com.example.moviebox.util.Constants
 import dagger.Module
@@ -41,5 +42,8 @@ object NetworkModule {
     @Singleton
     fun provideMovieCastCrewService(retrofit: Retrofit): CastAndCrewApi {
         return retrofit.create(CastAndCrewApi::class.java)
+    }
+    fun provideMovieDetailService(retrofit: Retrofit): MovieDetailApi {
+        return retrofit.create(MovieDetailApi::class.java)
     }
 }

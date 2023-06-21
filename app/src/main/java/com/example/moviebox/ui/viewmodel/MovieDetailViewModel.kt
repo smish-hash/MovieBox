@@ -3,7 +3,9 @@ package com.example.moviebox.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviebox.data.model.movielist.MovieListModel
+import com.example.moviebox.data.repository.MovieDetailRepository
 import com.example.moviebox.data.repository.MovieListRepository
+import com.example.moviebox.ui.state.MovieDetailState
 import com.example.moviebox.ui.state.MovieListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -13,31 +15,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
-    private val movieListRepository: MovieListRepository
+class MovieDetailViewModel @Inject constructor(
+    private val movieDetailRepository: MovieDetailRepository
 ): ViewModel() {
 
-    private val _popularMoviesState = MutableStateFlow<MovieListState>(MovieListState.Empty)
-    val popularMoviesState: StateFlow<MovieListState> = _popularMoviesState
+    private val _movieDetailState = MutableStateFlow<MovieDetailState>(MovieDetailState.Empty)
+    val movieDetailState: StateFlow<MovieDetailState> = _movieDetailState
 
-    /*init {
-        fetchPopularMovies()
-    }*/
-
-    fun fetchPopularMovies() {
-        _popularMoviesState.value = MovieListState.Loading
+    fun fetchMovieDetail(movieId: Int) {
+        _movieDetailState.value = MovieDetailState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val movies = movieListRepository.getPopularMovies(1)
-                _popularMoviesState.value = MovieListState.Success(movies)
+                val movieDetail = movieDetailRepository.getMovieDetail(movieId)
+                _movieDetailState.value = MovieDetailState.Success(movieDetail)
             } catch (e: Exception) {
                 // Handle error
-                onErrorOccurred(e.localizedMessage as String)
+                onErrorOccurred(e.localizedMessage)
             }
         }
     }
 
     private fun onErrorOccurred(error: String) {
-        _popularMoviesState.value = MovieListState.Error(error)
+        _movieDetailState.value = MovieDetailState.Error(error)
     }
 }
