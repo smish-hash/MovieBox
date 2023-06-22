@@ -70,10 +70,6 @@ fun CastAndCrew(
             )
         }
         is CastAndCrewState.Success -> {
-            Text(
-                text = "fetched cast and crew",
-                modifier = Modifier.padding(16.dp)
-            )
             DataLoaded(state.data)
         }
 

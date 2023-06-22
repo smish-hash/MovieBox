@@ -31,7 +31,7 @@ data class MovieDetailModel(
     @SerializedName("runtime")
     val runtime: Int? = null,
     @SerializedName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage?>? = null,
+    val spokenLanguages: List<SpokenLanguage>? = null,
     @SerializedName("status")
     val status: String? = null,
     @SerializedName("tagline")
