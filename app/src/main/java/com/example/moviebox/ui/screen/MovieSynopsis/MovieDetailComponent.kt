@@ -32,7 +32,7 @@ import com.example.moviebox.R
 @Composable
 fun MovieDetail(movieId: Int) {
     val availablity = true//from API
-    var message = ""
+    val message:String
     if(availablity){
         message = "Available in Cinemas"
     }else{
@@ -43,10 +43,10 @@ fun MovieDetail(movieId: Int) {
 
     ) {
         Card(
-            modifier = Modifier.then(
-                Modifier
+            modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp)),
+                    .height(120.dp)
+                    .padding(16.dp),
             shape = RoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 5.dp
@@ -102,6 +102,6 @@ fun MovieDetail(movieId: Int) {
 
 @Preview(showBackground = true)
 @Composable
-fun previewMovieDetailScreen(){
+fun PreviewMovieDetailScreen(){
     MovieDetail(123)
 }
