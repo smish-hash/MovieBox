@@ -34,7 +34,8 @@ object RepositoryModule {
         return CastAndCrewRepository(castAndCrewApi)
     }
 
-
+    @Singleton
+    @Provides
     fun provideMovieDetailRepository(
         movieDetailApi: MovieDetailApi
     ): MovieDetailRepository {
