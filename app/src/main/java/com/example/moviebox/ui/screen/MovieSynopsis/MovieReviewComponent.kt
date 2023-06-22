@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.substring
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,6 +60,8 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddMovieReview() {
@@ -194,10 +197,16 @@ fun ReviewCard(review: Result) {
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(5.dp))
 
+            val dateSt = "2017-04-08T18:39:42Z"
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            val formattedDate = LocalDateTime.parse(dateSt, dateFormatter)
+            val res = DateTimeFormatter.ofPattern("MMMM dd, yyyy | hh:mma").format(formattedDate) // August 04, 2017 | 6:39pm
             Text(
-                text = review.createdAt.toString(),
+                text = res,
                 style = TextStyle(fontWeight = FontWeight.Light, fontSize = 11.sp),
-                modifier = Modifier.padding(start = 160.dp, top = 30.dp))
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End
+            )
         }
     }
 }
