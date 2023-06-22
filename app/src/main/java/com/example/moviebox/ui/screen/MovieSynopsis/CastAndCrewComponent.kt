@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,7 +97,7 @@ fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
         Text(text = text)
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)){
-            items(members) {
+            items(members.subList(0, 10)) {
                 CastCard(it, modifier)
             }
         }
@@ -109,7 +112,7 @@ fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
         Text(text = text)
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)){
-            items(members) {
+            items(members.subList(0, 10)) {
                 CrewCard(it, modifier)
             }
         }
@@ -130,8 +133,8 @@ fun CastCard(cast: Cast, modifier: Modifier){
                 .size(64.dp)
                 .clip(CircleShape)
         )
-        cast.name?.let { Text(text = it) }
-        cast.character?.let { Text(text = it, color = Color.Gray, fontSize = 10.sp) }
+        cast.name?.let { Text(text = it, modifier = Modifier.width(120.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleSmall, maxLines = 2) }
+        cast.character?.let { Text(text = it, color = Color.Gray, style = MaterialTheme.typography.labelSmall, modifier = Modifier.width(120.dp), textAlign = TextAlign.Center, maxLines = 2) }
     }
 }
 

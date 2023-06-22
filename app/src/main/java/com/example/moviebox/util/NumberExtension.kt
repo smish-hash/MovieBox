@@ -14,3 +14,9 @@ fun Int.toShortenedString(): String {
         else -> this.toString()
     }
 }
+
+fun Int.toHoursMinutes():String{
+    val hours = this/60
+    val minutes = this %60
+    return "${hours}h ${minutes}m"
+}
