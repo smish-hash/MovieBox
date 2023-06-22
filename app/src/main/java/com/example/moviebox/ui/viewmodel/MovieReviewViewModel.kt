@@ -23,11 +23,11 @@ class MovieReviewViewModel @Inject constructor(
         fetchMovieReviews()
     }*/
 
-    fun fetchMovieReviews() {
+    fun fetchMovieReviews(movieId: Int) {
         _movieReviewState.value = MovieReviewState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val movieReview = movieReviewRepository.getMovieReview(1)
+                val movieReview = movieReviewRepository.getMovieReview(movieId)
                 _movieReviewState.value = MovieReviewState.Success(movieReview)
             } catch (e: Exception) {
                 // Handle error
