@@ -12,7 +12,7 @@ import com.example.moviebox.R
 fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit, modifier: Modifier) {
     Column {
         Text(text = "Welcome to synopsis page - $movieId", modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium )))
-
+        MovieDetail(movieId)
         CastAndCrew(movieId)
     }
 }

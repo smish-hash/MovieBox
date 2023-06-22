@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.moviebox.R
 
 @Composable
-fun MovieDetail() {
+fun MovieDetail(movieId: Int) {
     val availablity = true//from API
     var message = ""
     if(availablity){
@@ -103,5 +103,5 @@ fun MovieDetail() {
 @Preview(showBackground = true)
 @Composable
 fun previewMovieDetailScreen(){
-    MovieDetail()
+    MovieDetail(123)
 }
