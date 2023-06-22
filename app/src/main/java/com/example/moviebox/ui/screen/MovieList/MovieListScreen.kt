@@ -58,10 +58,6 @@ fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> U
                 )
             }
             is MovieListState.Success -> {
-                Text(
-                    text = "Popular movies fetched - ${movieListState.data.totalResults} movies found",
-                    modifier = Modifier.padding(16.dp)
-                )
                 movieListState.data.results?.let {
                     MovieCardGrid(
                         onMovieClicked = {onMovieClicked(it)},
