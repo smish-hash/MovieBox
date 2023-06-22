@@ -20,5 +20,6 @@ fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit, modifier:
     ) {
         MovieDetail(movieId)
         CastAndCrew(movieId)
+        MovieReview(movieId)
     }
 }

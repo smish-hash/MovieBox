@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface MovieReviewApi {
     @Headers("Authorization: Bearer ${Constants.AUTH_KEY}")
-    @GET("{movie_id}")
+    @GET("{movie_id}/reviews")
     suspend fun getMovieReviews(
         @Path("movie_id")
         movieId: Int,
