@@ -215,9 +215,13 @@ fun DataLoaded(data: MovieDetailModel) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(3.dp))
             ) {
-
-                val string = data.spokenLanguages?.subList(0,3)?.joinToString(separator = ", ") {
-                    "${it?.englishName}"
+                val spokenLanguageList =
+                    data.spokenLanguages?.size?.let {
+                        if (it > 3) data.spokenLanguages.subList(0,3)
+                        else data.spokenLanguages
+                    }
+                val string = spokenLanguageList?.joinToString(separator = ", ") {
+                    "${it.englishName}"
                 }
                 Text(
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
@@ -227,7 +231,12 @@ fun DataLoaded(data: MovieDetailModel) {
             }
 
         }
-        val genre = data.genres?.subList(0,3)?.joinToString(separator = ", ") {
+
+        val genreList = data.genres?.size?.let {
+            if (it > 3) data.genres.subList(0, 3)
+            else data.genres
+        }
+        val genre = genreList?.joinToString(separator = ", ") {
             "${it?.name}"
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
