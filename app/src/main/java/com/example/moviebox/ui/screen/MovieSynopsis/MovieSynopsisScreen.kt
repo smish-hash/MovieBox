@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit, modifier: Modifier) {
@@ -52,7 +53,10 @@ fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit, modifier:
                     .fillMaxWidth()
 
             ) {
-                Text(text = "Book tickets", color = Color.White)
+                Text(text = "Book tickets",
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
             }
         }
     }

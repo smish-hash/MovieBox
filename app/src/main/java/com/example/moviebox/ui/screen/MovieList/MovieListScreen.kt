@@ -19,11 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.example.moviebox.R
+import com.example.moviebox.data.model.movielist.MovieListModel
 import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.ui.state.MovieListState
 
 @Composable
-fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> Unit, onMovieClicked: (Int?) -> Unit, modifier: Modifier) {
+fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> Unit, onMovieClicked: (Result?) -> Unit, modifier: Modifier) {
     Column(verticalArrangement = Arrangement.Center) {
         Button(onClick = {
             onFetchMovieClicked()
@@ -72,7 +73,7 @@ fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> U
 @Composable
 fun MovieCardGrid(
     movies: List<Result>,
-    onMovieClicked: (Int?) -> Unit,
+    onMovieClicked: (Result?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(

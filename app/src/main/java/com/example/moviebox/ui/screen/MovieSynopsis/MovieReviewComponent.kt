@@ -133,7 +133,7 @@ fun ReviewCard(review: Result) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .height(200.dp)
+//                .height(200.dp)
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -187,7 +187,10 @@ fun ReviewCard(review: Result) {
                 style = TextStyle(fontSize = 12.sp),
                 maxLines = 7,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(5.dp))
+                modifier = Modifier
+                    .padding(5.dp)
+                    .height(150.dp)
+            )
 
             val dateSt = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 review.updatedAt?.convertToFormattedTime()
