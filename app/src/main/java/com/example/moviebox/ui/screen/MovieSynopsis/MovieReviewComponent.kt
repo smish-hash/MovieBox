@@ -46,6 +46,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviebox.R
 import com.example.moviebox.data.model.movieReview.MovieReviewModel
 import com.example.moviebox.data.model.movieReview.Result
+import com.example.moviebox.ui.screen.ImageLoading
+import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.state.MovieReviewState
 import com.example.moviebox.ui.viewmodel.MovieReviewViewModel
 import com.example.moviebox.util.convertToFormattedTime
@@ -160,7 +162,13 @@ fun ReviewCard(review: Result) {
                         modifier = Modifier
                             .size(30.dp)
                             .clip(CircleShape),
-                        previewPlaceholder = R.drawable.nature
+                        previewPlaceholder = R.drawable.nature,
+                        loading = {
+                            ImageLoading()
+                        },
+                        failure = {
+                            ImageLoadingError(errorImage = R.drawable.user)
+                        }
                     )
                     Text(text = review.author.toString(),
                         style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 15.sp),
