@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.example.moviebox.R
 import com.example.moviebox.data.model.movielist.Result
+import com.example.moviebox.ui.screen.ImageLoading
 import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.screen.ShimmerBrush
 import com.example.moviebox.util.Constants
@@ -64,9 +65,6 @@ fun MovieCard(
     ) {
 
         val imageUrl = Constants.BASE_IMAGE_URL + movie.posterPath
-        val shouldShimmer = remember {
-            mutableStateOf(true)
-        }
 
         CoilImage(
             imageModel = { imageUrl },
@@ -79,15 +77,7 @@ fun MovieCard(
                 .clip(RoundedCornerShape(10.dp))
                 .heightIn(min = 165.dp),
             loading = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(ShimmerBrush(showShimmer = shouldShimmer.value)),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    ShimmerBrush()
-                }
+                ImageLoading()
             },
             failure = {
                 ImageLoadingError(errorImage = R.drawable.baseline_error_outline_24)

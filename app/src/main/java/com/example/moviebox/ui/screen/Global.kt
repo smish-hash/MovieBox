@@ -6,6 +6,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +48,19 @@ fun ShimmerBrush(showShimmer: Boolean = true,targetValue:Float = 1000f): Brush {
             start = Offset.Zero,
             end = Offset.Zero
         )
+    }
+}
+
+@Composable
+fun ImageLoading() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ShimmerBrush()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ShimmerBrush()
     }
 }
 
