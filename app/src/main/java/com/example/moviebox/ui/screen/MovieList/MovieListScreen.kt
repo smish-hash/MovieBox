@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -24,19 +25,8 @@ import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.ui.state.MovieListState
 
 @Composable
-fun MovieListScreen(movieListState: MovieListState, onFetchMovieClicked: () -> Unit, onMovieClicked: (Result?) -> Unit, modifier: Modifier) {
+fun MovieListScreen(movieListState: MovieListState, onMovieClicked: (Result?) -> Unit) {
     Column(verticalArrangement = Arrangement.Center) {
-        Button(onClick = {
-            onFetchMovieClicked()
-        }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = dimensionResource(R.dimen.padding_medium),
-                vertical = dimensionResource(R.dimen.padding_medium)
-            )) {
-            Text(text = "Tap Me")
-        }
-
         when (movieListState) {
             is MovieListState.Empty -> {
                 Text(

@@ -1,6 +1,5 @@
 package com.example.moviebox.ui.screen
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -9,6 +8,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -18,8 +21,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -33,6 +36,7 @@ import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
+import kotlinx.coroutines.launch
 
 
 sealed class Screen(var title: String, val route: String) {
@@ -83,6 +87,8 @@ fun MovieBoxApp(
 
     val currentScreenState = remember { mutableStateOf(currentScreen) }
     currentScreenState.value = currentScreen
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -91,7 +97,8 @@ fun MovieBoxApp(
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         val movieListState by movieListViewModel.popularMoviesState.collectAsState()
 
@@ -101,19 +108,17 @@ fun MovieBoxApp(
             startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = Screen.Home.route) {
+            composable(
+                route = Screen.Home.route
+            ) {
                 MovieListScreen(
                     movieListState = movieListState,
-                    onFetchMovieClicked = { movieListViewModel.fetchPopularMovies() },
                     onMovieClicked = {movieId ->
                         movieId?.let {
                             navController.navigate("detail/${it.id}")
                             Screen.Synopsis.title = it.title.toString()
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(dimensionResource(R.dimen.padding_medium))
+                    }
                 )
             }
 
@@ -126,10 +131,26 @@ fun MovieBoxApp(
                 val movieId = it.arguments?.getInt("id") ?: -1
                 MovieSynopsisScreen(
                     movieId = movieId,
-                    onBookTicketClicked = { /*TODO*/ },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(dimensionResource(R.dimen.padding_medium)))
+                    onBookTicketClicked = {
+                        coroutineScope.launch {
+                            val result = snackbarHostState.showSnackbar(
+                                message = "Your tickets have been booked :)",
+                                actionLabel = "Awesome!",
+                                duration = SnackbarDuration.Short
+                            )
+
+                            when (result) {
+                                SnackbarResult.Dismissed -> {
+
+                                }
+
+                                SnackbarResult.ActionPerformed -> {
+                                    snackbarHostState.currentSnackbarData?.dismiss()
+                                }
+                            }
+                        }
+                    }
+                )
             }
         }
     }
