@@ -138,7 +138,7 @@ fun DataLoaded(data: MovieDetailModel) {
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop
                     ),
-                    previewPlaceholder = R.drawable.spider,
+                    previewPlaceholder = R.drawable.nature,
                     loading = {
                         ImageLoading()
                     },
