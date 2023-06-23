@@ -3,6 +3,7 @@ package com.example.moviebox.ui.screen.MovieList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,8 +28,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.moviebox.R
 import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.ui.screen.ImageLoading
@@ -83,19 +87,23 @@ fun MovieCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically
+                .background(color = Color.LightGray)
+                .height(25.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 Icons.Default.Star,
                 contentDescription = null,
                 tint = Color.Red,
-                modifier = Modifier.padding(start = 6.dp, end = 6.dp)
+                modifier = Modifier
+                    .padding(start = 6.dp, end = 3.dp)
+                    .size(20.dp)
             )
             Text(
                 modifier = Modifier.weight(1f),
-                text = movie.voteAverage.toString()
+                text = movie.voteAverage.toString(),
+                fontSize = 15.sp
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -103,6 +111,7 @@ fun MovieCard(
             Text(
                 modifier = Modifier.padding(end = 6.dp),
                 text = "${movie.voteCount?.toShortenedString()} votes",
+                fontSize = 15.sp
             )
         }
 
@@ -111,8 +120,9 @@ fun MovieCard(
         movie.title?.let {
             Text(
                 text = it,
-                style = MaterialTheme.typography.titleLarge,
-                fontFamily = FontFamily.SansSerif
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.Bold
             )
         }
     }
