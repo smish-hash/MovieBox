@@ -49,6 +49,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviebox.R
 import com.example.moviebox.data.model.moviedetail.MovieDetailModel
+import com.example.moviebox.ui.screen.ImageLoading
+import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.state.MovieDetailState
 import com.example.moviebox.ui.viewmodel.MovieDetailViewModel
 import com.example.moviebox.util.Constants
@@ -144,7 +146,13 @@ fun DataLoaded(data: MovieDetailModel) {
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop
                     ),
-                    previewPlaceholder = R.drawable.spider
+                    previewPlaceholder = R.drawable.spider,
+                    loading = {
+                        ImageLoading()
+                    },
+                    failure = {
+                        ImageLoadingError(errorImage = R.drawable.baseline_error_outline_24)
+                    }
                 )
                 Box(
                     modifier = Modifier

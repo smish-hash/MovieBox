@@ -33,6 +33,8 @@ import com.example.moviebox.R
 import com.example.moviebox.data.model.castcrew.Cast
 import com.example.moviebox.data.model.castcrew.CastAndCrewModel
 import com.example.moviebox.data.model.castcrew.Crew
+import com.example.moviebox.ui.screen.ImageLoading
+import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.state.CastAndCrewState
 import com.example.moviebox.ui.viewmodel.CastAndCrewViewModel
 import com.example.moviebox.util.Constants
@@ -141,9 +143,16 @@ fun CastCard(cast: Cast, modifier: Modifier) {
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center
             ),
+            previewPlaceholder = R.drawable.nature,
             modifier = Modifier
                 .size(86.dp)
-                .clip(CircleShape)
+                .clip(CircleShape),
+            loading = {
+                ImageLoading()
+            },
+            failure = {
+                ImageLoadingError(errorImage = R.drawable.user)
+            }
         )
         Spacer(modifier = modifier.height(4.dp))
         cast.name?.let {
@@ -188,9 +197,16 @@ fun CrewCard(crew: Crew, modifier: Modifier) {
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center
             ),
+            previewPlaceholder = R.drawable.nature,
             modifier = Modifier
                 .size(86.dp)
-                .clip(CircleShape)
+                .clip(CircleShape),
+            loading = {
+                ImageLoading()
+            },
+            failure = {
+                ImageLoadingError(errorImage = R.drawable.user)
+            }
         )
         Spacer(modifier = modifier.height(4.dp))
         crew.name?.let { Text(
