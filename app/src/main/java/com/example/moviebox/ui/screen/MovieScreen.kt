@@ -35,7 +35,7 @@ import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
 
 
-sealed class Screen(val title: String, val route: String) {
+sealed class Screen(var title: String, val route: String) {
     object Home: Screen("Movie Box", "home")
     object Synopsis: Screen("Synopsis", "detail/{id}")
 }
@@ -107,7 +107,8 @@ fun MovieBoxApp(
                     onFetchMovieClicked = { movieListViewModel.fetchPopularMovies() },
                     onMovieClicked = {movieId ->
                         movieId?.let {
-                            navController.navigate("detail/$it")
+                            navController.navigate("detail/${it.id}")
+                            Screen.Synopsis.title = it.title.toString()
                         }
                     },
                     modifier = Modifier

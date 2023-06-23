@@ -120,14 +120,6 @@ fun DataLoaded(data: MovieDetailModel) {
         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
     ) {
 
-        Text(
-            text = data.title.toString(),
-            modifier = Modifier
-                .padding(6.dp)
-                .fillMaxWidth(),
-            style = MaterialTheme.typography.titleMedium
-        )
-
         Card (
             modifier = Modifier
                 .fillMaxWidth()
