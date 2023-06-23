@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -106,7 +107,7 @@ fun TopReviews(reviewCount: Int) {
                         fontSize = 13.sp)
                 )
                 Icon(
-                    Icons.Default.ArrowForward,
+                    Icons.Default.KeyboardArrowRight,
                     contentDescription = null,
                     tint = Color.Red,
                     modifier = Modifier

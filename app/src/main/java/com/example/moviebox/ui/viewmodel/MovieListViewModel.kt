@@ -18,7 +18,8 @@ class MovieListViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _popularMoviesState = MutableStateFlow<MovieListState>(MovieListState.Empty)
-    val popularMoviesState: StateFlow<MovieListState> = _popularMoviesState
+    val popularMoviesState: StateFlow<MovieListState>
+    get() = _popularMoviesState
 
     init {
         fetchPopularMovies()

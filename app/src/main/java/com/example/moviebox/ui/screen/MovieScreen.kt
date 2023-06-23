@@ -1,8 +1,12 @@
 package com.example.moviebox.ui.screen
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +27,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -36,12 +46,13 @@ import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
+import com.google.android.material.color.ColorResourcesOverride
 import kotlinx.coroutines.launch
 
 
-sealed class Screen(var title: String, val route: String) {
-    object Home: Screen("Movie Box", "home")
-    object Synopsis: Screen("Synopsis", "detail/{id}")
+sealed class Screen(var title: String, val route: String, val color: Color, val textColor: Color) {
+    object Home: Screen("Movie Box", "home", color = Color.Black, textColor = Color.White)
+    object Synopsis: Screen("Synopsis", "detail/{id}", color = Color.White, textColor = Color.Black)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,17 +64,26 @@ fun MovieBoxAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(currentScreen.value.title) },
+        title = {
+            Text(
+                text = currentScreen.value.title,
+                fontSize = 16.sp,
+                style = TextStyle(color = currentScreen.value.textColor)
+            )
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = currentScreen.value.color
+//            MaterialTheme.colorScheme.primaryContainer
         ),
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.navigate_up)
+                        imageVector = Icons.Outlined.KeyboardArrowLeft,
+                        contentDescription = stringResource(R.string.navigate_up),
+//                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
             }
