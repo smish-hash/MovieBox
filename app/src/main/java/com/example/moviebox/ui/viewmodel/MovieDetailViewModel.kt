@@ -2,7 +2,6 @@ package com.example.moviebox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviebox.data.model.movielist.MovieListModel
 import com.example.moviebox.data.repository.MovieDetailRepository
 import com.example.moviebox.data.repository.MovieListRepository
 import com.example.moviebox.ui.state.MovieDetailState
