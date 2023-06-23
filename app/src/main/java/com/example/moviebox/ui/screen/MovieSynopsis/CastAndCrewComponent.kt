@@ -2,7 +2,9 @@ package com.example.moviebox.ui.screen.MovieSynopsis
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,7 +45,7 @@ fun CastAndCrew(
     castAndCrewViewModel: CastAndCrewViewModel = hiltViewModel()
 ) {
     val state = castAndCrewViewModel.castAndCrewState.collectAsState().value
-    
+
     LaunchedEffect(movieId) {
         castAndCrewViewModel.fetchCastAndCrew(movieId)
     }
@@ -55,6 +57,7 @@ fun CastAndCrew(
                 modifier = Modifier.padding(16.dp)
             )
         }
+
         is CastAndCrewState.Loading ->
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -63,12 +66,14 @@ fun CastAndCrew(
             ) {
                 CircularProgressIndicator()
             }
+
         is CastAndCrewState.Error -> {
             Text(
                 text = "error found - ${state.message}",
                 modifier = Modifier.padding(16.dp)
             )
         }
+
         is CastAndCrewState.Success -> {
             DataLoaded(state.data)
         }
@@ -89,10 +94,13 @@ fun DataLoaded(data: CastAndCrewModel) {
 @Composable
 fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
 
-    Column(modifier = modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp)) {
-        Text(text = text)
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)){
+    Column(modifier = modifier.padding(vertical = 16.dp)) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = modifier.padding(horizontal = 16.dp)
+        )
+        LazyRow {
             items(members.subList(0, 10)) {
                 CastCard(it, modifier)
             }
@@ -104,20 +112,28 @@ fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
 @Composable
 fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
 
-    Column(modifier = modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp)) {
-        Text(text = text)
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)){
+    Column(
+        modifier = modifier
+            .padding(vertical = 16.dp)
+    ) {
+        Text(text = text,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = modifier.padding(horizontal = 16.dp))
+        LazyRow{
             items(members.subList(0, 10)) {
                 CrewCard(it, modifier)
             }
         }
     }
 }
+
 @Composable
-fun CastCard(cast: Cast, modifier: Modifier){
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))) {
-        val imageUrl = Constants.BASE_IMAGE_URL+cast.profilePath
+fun CastCard(cast: Cast, modifier: Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 14.dp, end = 6.dp, start = 6.dp)
+    ) {
+        val imageUrl = Constants.BASE_IMAGE_URL + cast.profilePath
 
         CoilImage(
             imageModel = { imageUrl },
@@ -126,18 +142,45 @@ fun CastCard(cast: Cast, modifier: Modifier){
                 alignment = Alignment.Center
             ),
             modifier = Modifier
-                .size(64.dp)
+                .size(86.dp)
                 .clip(CircleShape)
         )
-        cast.name?.let { Text(text = it, modifier = Modifier.width(120.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleSmall, maxLines = 2) }
-        cast.character?.let { Text(text = it, color = Color.Gray, style = MaterialTheme.typography.labelSmall, modifier = Modifier.width(120.dp), textAlign = TextAlign.Center, maxLines = 2) }
+        Spacer(modifier = modifier.height(4.dp))
+        cast.name?.let {
+            Text(
+                text = it,
+                modifier = Modifier
+                    .height(28.dp)
+                    .width(60.dp),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium,
+                lineHeight = 14.sp,
+                maxLines = 2,
+            )
+        }
+        cast.character?.let {
+            Text(
+                text = "as $it",
+                color = Color.Gray,
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier
+                    .height(30.dp)
+                    .width(80.dp),
+                textAlign = TextAlign.Center,
+                lineHeight = 12.sp,
+                maxLines = 2
+            )
+        }
     }
 }
 
 @Composable
-fun CrewCard(crew: Crew, modifier: Modifier){
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))) {
-        val imageUrl = Constants.BASE_IMAGE_URL+crew.profilePath
+fun CrewCard(crew: Crew, modifier: Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 14.dp, end = 6.dp, start = 6.dp)
+    ) {
+        val imageUrl = Constants.BASE_IMAGE_URL + crew.profilePath
 
         CoilImage(
             imageModel = { imageUrl },
@@ -146,13 +189,32 @@ fun CrewCard(crew: Crew, modifier: Modifier){
                 alignment = Alignment.Center
             ),
             modifier = Modifier
-                .size(64.dp)
+                .size(86.dp)
                 .clip(CircleShape)
         )
-        crew.name?.let { Text(text = it) }
-        crew.job?.let { Text(text = it, color = Color.Gray, fontSize = 10.sp) }
+        Spacer(modifier = modifier.height(4.dp))
+        crew.name?.let { Text(
+            text = it,
+            modifier = Modifier
+                .height(28.dp)
+                .width(60.dp),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelMedium,
+            lineHeight = 14.sp,
+            maxLines = 2,
+        ) }
+        crew.job?.let { Text(text = it,
+            color = Color.Gray,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier
+                .height(30.dp)
+                .width(80.dp),
+            textAlign = TextAlign.Center,
+            lineHeight = 12.sp,
+            maxLines = 2) }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommonCastCrewComponent() {
