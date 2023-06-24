@@ -1,11 +1,9 @@
 package com.example.moviebox.ui.screen
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,12 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -45,13 +40,13 @@ import androidx.navigation.navArgument
 import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
+import com.example.moviebox.ui.theme.*
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
-import com.google.android.material.color.ColorResourcesOverride
 import kotlinx.coroutines.launch
 
 
 sealed class Screen(var title: String, val route: String, val color: Color, val textColor: Color) {
-    object Home: Screen("Movie Box", "home", color = Color.Black, textColor = Color.White)
+    object Home: Screen("It All Starts Here", "home", color = DarkBlue, textColor = Color.White)
     object Synopsis: Screen("Synopsis", "detail/{id}", color = Color.White, textColor = Color.Black)
 }
 
@@ -60,19 +55,30 @@ sealed class Screen(var title: String, val route: String, val color: Color, val 
 fun MovieBoxAppBar(
     currentScreen: State<Screen>,
     canNavigateBack: Boolean,
+    showSubtitle: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
         title = {
-            Text(
-                text = currentScreen.value.title,
-                fontSize = 16.sp,
-                style = TextStyle(color = currentScreen.value.textColor)
-            )
+            Column {
+                Text(
+                    text = currentScreen.value.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = currentScreen.value.textColor
+                )
+                if (showSubtitle)
+                    Text(
+                        text = "Bengaluru >",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = currentScreen.value.textColor,
+                        fontFamily = FontFamily.SansSerif
+                    )
+            }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = currentScreen.value.color
+            containerColor = currentScreen.value.color,
+            titleContentColor = MaterialTheme.colorScheme.onSurface
 //            MaterialTheme.colorScheme.primaryContainer
         ),
         modifier = modifier,
@@ -115,6 +121,7 @@ fun MovieBoxApp(
             MovieBoxAppBar(
                 currentScreen = currentScreenState,
                 canNavigateBack = navController.previousBackStackEntry != null,
+                showSubtitle = currentScreenState.value == Screen.Home,
                 navigateUp = { navController.navigateUp() }
             )
         },
