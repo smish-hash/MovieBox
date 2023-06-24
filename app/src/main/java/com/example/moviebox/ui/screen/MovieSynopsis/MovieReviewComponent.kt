@@ -19,9 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -50,6 +49,7 @@ import com.example.moviebox.data.model.movieReview.Result
 import com.example.moviebox.ui.screen.ImageLoading
 import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.state.MovieReviewState
+import com.example.moviebox.ui.theme.*
 import com.example.moviebox.ui.viewmodel.MovieReviewViewModel
 import com.example.moviebox.util.convertToFormattedTime
 import com.skydoves.landscapist.ImageOptions
@@ -168,7 +168,7 @@ fun ReviewCard(review: Result) {
                             ImageLoading()
                         },
                         failure = {
-                            ImageLoadingError(errorImage = R.drawable.user)
+                            ImageLoadingError(errorImage = R.drawable.baseline_person_24)
                         }
                     )
                     Text(text = review.author.toString(),
@@ -180,9 +180,9 @@ fun ReviewCard(review: Result) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        Icons.Default.Star,
+                        Icons.Rounded.Star,
                         contentDescription = null,
-                        tint = Color.Red
+                        tint = PinkSecondary
                     )
                     Text(text = "${review.authorDetails?.rating ?: 1}/10",
                         style = TextStyle(fontSize = 15.sp),

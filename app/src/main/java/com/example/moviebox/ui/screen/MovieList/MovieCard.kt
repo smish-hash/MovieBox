@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,6 +36,7 @@ import com.example.moviebox.R
 import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.ui.screen.ImageLoading
 import com.example.moviebox.ui.screen.ImageLoadingError
+import com.example.moviebox.ui.theme.*
 import com.example.moviebox.util.Constants
 import com.example.moviebox.util.toShortenedString
 import com.skydoves.landscapist.ImageOptions
@@ -87,15 +88,16 @@ fun MovieCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(color = Color.LightGray)
-                .height(25.dp),
+                .background(color = LightBlue)
+                .heightIn(28.dp)
+                .padding(vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                Icons.Default.Star,
+                Icons.Rounded.Star,
                 contentDescription = null,
-                tint = Color.Red,
+                tint = PinkSecondary,
                 modifier = Modifier
                     .padding(start = 6.dp, end = 3.dp)
                     .size(20.dp)
@@ -103,7 +105,8 @@ fun MovieCard(
             Text(
                 modifier = Modifier.weight(1f),
                 text = movie.voteAverage.toString(),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -111,7 +114,8 @@ fun MovieCard(
             Text(
                 modifier = Modifier.padding(end = 6.dp),
                 text = "${movie.voteCount?.toShortenedString()} votes",
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
 

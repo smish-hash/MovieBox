@@ -45,13 +45,13 @@ import androidx.navigation.navArgument
 import com.example.moviebox.R
 import com.example.moviebox.ui.screen.MovieList.MovieListScreen
 import com.example.moviebox.ui.screen.MovieSynopsis.MovieSynopsisScreen
+import com.example.moviebox.ui.theme.*
 import com.example.moviebox.ui.viewmodel.MovieListViewModel
-import com.google.android.material.color.ColorResourcesOverride
 import kotlinx.coroutines.launch
 
 
 sealed class Screen(var title: String, val route: String, val color: Color, val textColor: Color) {
-    object Home: Screen("Movie Box", "home", color = Color.Black, textColor = Color.White)
+    object Home: Screen("It All Starts Here", "home", color = DarkBlue, textColor = Color.White)
     object Synopsis: Screen("Synopsis", "detail/{id}", color = Color.White, textColor = Color.Black)
 }
 

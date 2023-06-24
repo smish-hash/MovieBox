@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,6 +52,7 @@ import com.example.moviebox.data.model.moviedetail.MovieDetailModel
 import com.example.moviebox.ui.screen.ImageLoading
 import com.example.moviebox.ui.screen.ImageLoadingError
 import com.example.moviebox.ui.state.MovieDetailState
+import com.example.moviebox.ui.theme.*
 import com.example.moviebox.ui.viewmodel.MovieDetailViewModel
 import com.example.moviebox.util.Constants
 import com.example.moviebox.util.convertToFormattedDate
@@ -175,9 +176,9 @@ fun DataLoaded(data: MovieDetailModel) {
                 .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                Icons.Default.Star,
+                Icons.Rounded.Star,
                 contentDescription = null,
-                tint = Color.Red,
+                tint = PinkSecondary,
                 modifier = Modifier.padding(end = 6.dp)
             )
             val df = DecimalFormat("#.#")
@@ -204,7 +205,7 @@ fun DataLoaded(data: MovieDetailModel) {
                 Text(
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
                     text = "2D, 3D, ICE, 4DX, MX4D, IMAX 2D",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -226,7 +227,7 @@ fun DataLoaded(data: MovieDetailModel) {
                 Text(
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
                     text = string?:"N/A",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -291,7 +292,7 @@ fun ExpandableText(
             modifier = textModifier
                 .fillMaxWidth()
                 .animateContentSize()
-                .padding(6.dp),
+                .padding(horizontal = 6.dp, vertical = 8.dp),
             text = buildAnnotatedString {
                 if (clickable) {
                     if (isExpanded) {
@@ -314,7 +315,8 @@ fun ExpandableText(
                     lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
                 }
             },
-            fontSize = 11.sp
+            fontSize = 11.sp,
+            lineHeight = 16.sp
         )
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.moviebox.ui.theme.*
 
 @Composable
 fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit) {
@@ -44,7 +45,7 @@ fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit) {
                     onBookTicketClicked()
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red,
+                    containerColor = PinkPrimary,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp),

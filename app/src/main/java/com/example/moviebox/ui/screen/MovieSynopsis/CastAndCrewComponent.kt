@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -99,7 +100,10 @@ fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
     Column(modifier = modifier.padding(vertical = 16.dp)) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            ),
             modifier = modifier.padding(horizontal = 16.dp)
         )
         LazyRow {
@@ -119,7 +123,10 @@ fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
             .padding(vertical = 16.dp)
     ) {
         Text(text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            ),
             modifier = modifier.padding(horizontal = 16.dp))
         LazyRow{
             items(members.subList(0, 10)) {
@@ -151,7 +158,7 @@ fun CastCard(cast: Cast, modifier: Modifier) {
                 ImageLoading()
             },
             failure = {
-                ImageLoadingError(errorImage = R.drawable.user)
+                ImageLoadingError(errorImage = R.drawable.baseline_person_24)
             }
         )
         Spacer(modifier = modifier.height(4.dp))
@@ -205,7 +212,7 @@ fun CrewCard(crew: Crew, modifier: Modifier) {
                 ImageLoading()
             },
             failure = {
-                ImageLoadingError(errorImage = R.drawable.user)
+                ImageLoadingError(errorImage = R.drawable.baseline_person_24)
             }
         )
         Spacer(modifier = modifier.height(4.dp))
