@@ -20,10 +20,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.moviebox.ui.theme.*
+import com.example.moviebox.data.model.MovieSynopsisModel
+import com.example.moviebox.ui.theme.PinkPrimary
 
 @Composable
-fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit) {
+fun MovieSynopsisScreen(movieSynopsis: MovieSynopsisModel, onBookTicketClicked: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -31,9 +32,9 @@ fun MovieSynopsisScreen(movieId: Int, onBookTicketClicked: () -> Unit) {
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 64.dp)
         ) {
-            MovieDetail(movieId)
-            CastAndCrew(movieId)
-            MovieReview(movieId)
+            MovieDetail(movieSynopsis.movieDetail)
+            CastAndCrew(movieSynopsis.movieCastCrew)
+            MovieReview(movieSynopsis.movieReview)
         }
 
         Surface(
