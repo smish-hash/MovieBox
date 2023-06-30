@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,17 +15,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,11 +42,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviebox.R
 import com.example.moviebox.data.model.moviedetail.MovieDetailModel
-import com.example.moviebox.ui.state.MovieDetailState
-import com.example.moviebox.ui.viewmodel.MovieDetailViewModel
+import com.example.moviebox.ui.screen.ImageLoading
+import com.example.moviebox.ui.screen.ImageLoadingError
+import com.example.moviebox.ui.theme.PinkSecondary
 import com.example.moviebox.util.Constants
 import com.example.moviebox.util.convertToFormattedDate
 import com.example.moviebox.util.toHoursMinutes
@@ -61,47 +57,8 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Composable
-fun MovieDetail(movieId: Int, movieDetailViewModel: MovieDetailViewModel = hiltViewModel()) {
-    val state = movieDetailViewModel.movieDetailState.collectAsState().value
-    LaunchedEffect(movieId) {
-        movieDetailViewModel.fetchMovieDetail(movieId = movieId)
-    }
-
-    when (state) {
-        is MovieDetailState.Empty -> {
-            Text(
-                text = "No data available",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        is MovieDetailState.Loading ->
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-            }
-        is MovieDetailState.Error -> {
-            Text(
-                text = "error found - ${state.message}",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        is MovieDetailState.Success -> {
-
-            DataLoaded(state.data)
-        }
-
-    }
-
-}
-
-@Composable
-fun DataLoaded(data: MovieDetailModel) {
-
-
-    val availability = data.status//from API
+fun MovieDetail(data: MovieDetailModel) {
+    val availability = data.status
     val message: String = if (availability== "Released") {
         "Available in Cinemas"
     } else {
@@ -117,14 +74,6 @@ fun DataLoaded(data: MovieDetailModel) {
     Column(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
     ) {
-
-        Text(
-            text = data.title.toString(),
-            modifier = Modifier
-                .padding(6.dp)
-                .fillMaxWidth(),
-            style = MaterialTheme.typography.titleMedium
-        )
 
         Card (
             modifier = Modifier
@@ -144,7 +93,13 @@ fun DataLoaded(data: MovieDetailModel) {
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop
                     ),
-                    previewPlaceholder = R.drawable.spider
+                    previewPlaceholder = R.drawable.nature,
+                    loading = {
+                        ImageLoading()
+                    },
+                    failure = {
+                        ImageLoadingError(errorImage = R.drawable.baseline_error_outline_24)
+                    }
                 )
                 Box(
                     modifier = Modifier
@@ -175,9 +130,9 @@ fun DataLoaded(data: MovieDetailModel) {
                 .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                Icons.Default.Star,
+                Icons.Rounded.Star,
                 contentDescription = null,
-                tint = Color.Red,
+                tint = PinkSecondary,
                 modifier = Modifier.padding(end = 6.dp)
             )
             val df = DecimalFormat("#.#")
@@ -204,7 +159,7 @@ fun DataLoaded(data: MovieDetailModel) {
                 Text(
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
                     text = "2D, 3D, ICE, 4DX, MX4D, IMAX 2D",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -226,7 +181,7 @@ fun DataLoaded(data: MovieDetailModel) {
                 Text(
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
                     text = string?:"N/A",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -291,7 +246,7 @@ fun ExpandableText(
             modifier = textModifier
                 .fillMaxWidth()
                 .animateContentSize()
-                .padding(6.dp),
+                .padding(horizontal = 6.dp, vertical = 8.dp),
             text = buildAnnotatedString {
                 if (clickable) {
                     if (isExpanded) {
@@ -314,7 +269,8 @@ fun ExpandableText(
                     lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
                 }
             },
-            fontSize = 11.sp
+            fontSize = 11.sp,
+            lineHeight = 16.sp
         )
     }
 }
@@ -322,7 +278,7 @@ fun ExpandableText(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMovieDetailScreen() {
-    DataLoaded(
+    MovieDetail(
         MovieDetailModel(
             title = "Spiderman",
             voteAverage = 3.54,

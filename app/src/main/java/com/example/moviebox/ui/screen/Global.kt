@@ -6,9 +6,14 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +22,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.moviebox.R
 
 @Composable
@@ -51,6 +57,19 @@ fun ShimmerBrush(showShimmer: Boolean = true,targetValue:Float = 1000f): Brush {
 }
 
 @Composable
+fun ImageLoading() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ShimmerBrush()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ShimmerBrush()
+    }
+}
+
+@Composable
 fun ImageLoadingError(errorImage: Int) {
     Column(
         modifier = Modifier
@@ -61,6 +80,35 @@ fun ImageLoadingError(errorImage: Int) {
         Image(
             painter = painterResource(id = errorImage),
             contentDescription = stringResource(id = R.string.image_error)
+        )
+    }
+}
+
+@Composable
+fun Loading() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+        Text(
+            text = "Loading...",
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun ErrorOrEmpty(errorMessage: String = "Unknown error occurred") {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "error found - $errorMessage",
+            modifier = Modifier
+                .padding(16.dp)
         )
     }
 }
