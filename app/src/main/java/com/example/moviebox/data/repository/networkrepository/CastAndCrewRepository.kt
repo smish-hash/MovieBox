@@ -1,4 +1,4 @@
-package com.example.moviebox.data.repository
+package com.example.moviebox.data.repository.networkrepository
 
 import com.example.moviebox.data.api.CastAndCrewApi
 import com.example.moviebox.data.model.castcrew.CastAndCrewModel
