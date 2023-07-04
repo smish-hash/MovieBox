@@ -2,7 +2,7 @@ package com.example.moviebox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviebox.data.repository.MovieListRepository
+import com.example.moviebox.data.repository.networkrepository.MovieListRepository
 import com.example.moviebox.ui.state.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
