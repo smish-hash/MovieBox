@@ -8,9 +8,9 @@ import com.example.moviebox.data.model.MovieSynopsisModel
 import com.example.moviebox.data.model.castcrew.CastAndCrewModel
 import com.example.moviebox.data.model.movieReview.MovieReviewModel
 import com.example.moviebox.data.model.moviedetail.MovieDetailModel
-import com.example.moviebox.data.repository.CastAndCrewRepository
-import com.example.moviebox.data.repository.MovieDetailRepository
-import com.example.moviebox.data.repository.MovieReviewRepository
+import com.example.moviebox.data.repository.networkrepository.CastAndCrewRepository
+import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
+import com.example.moviebox.data.repository.networkrepository.MovieReviewRepository
 import com.example.moviebox.ui.state.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
