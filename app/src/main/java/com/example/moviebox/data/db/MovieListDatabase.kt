@@ -1,31 +1,26 @@
 package com.example.moviebox.data.db
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.moviebox.data.converter.Converters
 import com.example.moviebox.data.dao.MovieDao
 import com.example.moviebox.data.model.movielist.Result
+import com.example.moviebox.di.ApplicationScope
+import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
+import javax.inject.Provider
 
 @Database(
     version = 1,
     entities = [Result::class],
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class MovieListDatabase: RoomDatabase() {
-    abstract fun movieDao(): MovieDao
-
-    companion object {
-        @Volatile
-        private var Instance: MovieListDatabase? = null
-
-        fun getDatabase(context: Context): MovieListDatabase {
-            // if the Instance is not null, return it, otherwise create a new database instance.
-            return Instance ?: synchronized(this) {
-                Room.databaseBuilder(context, MovieListDatabase::class.java, "movie_database")
-                    .build()
-                    .also { Instance = it }
-            }
-        }
-    }
+    abstract fun getMovieDao(): MovieDao
+    class Callback @Inject constructor(
+        private val database: Provider<MovieListDatabase>,
+        @ApplicationScope private val applicationScope: CoroutineScope
+    ) : RoomDatabase.Callback()
 }
