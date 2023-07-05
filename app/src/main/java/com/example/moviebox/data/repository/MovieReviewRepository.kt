@@ -1,4 +1,4 @@
-package com.example.moviebox.data.repository.networkrepository
+package com.example.moviebox.data.repository
 
 import com.example.moviebox.data.api.MovieReviewApi
 import com.example.moviebox.data.model.movieReview.MovieReviewModel
