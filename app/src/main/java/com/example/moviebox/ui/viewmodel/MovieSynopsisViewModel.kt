@@ -1,5 +1,6 @@
 package com.example.moviebox.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +13,9 @@ import com.example.moviebox.data.repository.networkrepository.CastAndCrewReposit
 import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
 import com.example.moviebox.data.repository.networkrepository.MovieReviewRepository
 import com.example.moviebox.ui.state.ScreenState
+import com.example.moviebox.util.NetworkUtil.Companion.hasInternetConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +27,8 @@ import javax.inject.Inject
 class MovieSynopsisViewModel @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
     private val movieCastAndCrewRepository: CastAndCrewRepository,
-    private val movieReviewRepository: MovieReviewRepository
+    private val movieReviewRepository: MovieReviewRepository,
+    @ApplicationContext private val context: Context
 ): ViewModel() {
 
     private val _movieDetailState = MutableStateFlow<ScreenState>(ScreenState.Empty)
@@ -41,14 +45,17 @@ class MovieSynopsisViewModel @Inject constructor(
     fun fetchMovieSynopsis() {
         viewModelScope.launch {
             try {
-                val result = performSynopsisCall()
-                _movieDetailState.value = ScreenState.Success(result)
+                if (hasInternetConnection(context)) {
+                    val result = performSynopsisCall()
+                    _movieDetailState.value = ScreenState.Success(result)
+                } else {
+                    _movieDetailState.value = ScreenState.Error("No internet connection")
+                }
             } catch (e: Exception) {
                 onErrorOccurred(e.localizedMessage)
             }
         }
     }
-
     private suspend fun performSynopsisCall(): MovieSynopsisModel = coroutineScope {
 
         val resDetails = async { fetchMovieDetails() }

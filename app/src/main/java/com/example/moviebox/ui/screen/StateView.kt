@@ -7,7 +7,7 @@ import com.example.moviebox.ui.state.ScreenState
 fun StateView(
     uiState: ScreenState,
     loadingComposable: @Composable () -> Unit = { Loading() },
-    errorComposable: @Composable (String) -> Unit = { ErrorOrEmpty(errorMessage = it) },
+    errorComposable: @Composable (String) -> Unit,
     successComposable: @Composable (Any) -> Unit,
 ) {
     when (uiState) {
