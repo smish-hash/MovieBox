@@ -55,7 +55,12 @@ class MovieDetailFragment : BaseFragmentBinding<FragmentMovieDetailBinding>(Frag
                     StateView(
                         uiState = uiState,
                         errorComposable = {
-                            ErrorOrEmpty(errorMessage = it)
+                            ErrorOrEmpty(
+                                errorMessage = it,
+                                onRefreshButtonClick = {
+                                    movieId?.let { id -> movieSynopsisViewModel.setMovieId(id) }
+                                }
+                            )
                         }
                     ) {
                         val result = it as MovieSynopsisModel

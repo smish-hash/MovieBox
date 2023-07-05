@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -98,17 +99,24 @@ fun Loading() {
         )
     }
 }
-
 @Composable
-fun ErrorOrEmpty(errorMessage: String = "Unknown error occurred") {
-    Box(
+fun ErrorOrEmpty(errorMessage: String = "Unknown error occurred", onRefreshButtonClick: () -> Unit) {
+    Column(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
         Text(
             text = "error found - $errorMessage",
             modifier = Modifier
                 .padding(16.dp)
         )
+        Button(
+            onClick = {
+                onRefreshButtonClick()
+            },
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(text = "Refresh")
+        }
     }
 }

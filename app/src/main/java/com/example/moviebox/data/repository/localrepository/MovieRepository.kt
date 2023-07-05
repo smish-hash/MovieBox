@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieRepository {
     fun getAllMovies(): Flow<List<Result>>
 
-    suspend fun insertMovie(movie: Result)
+    suspend fun insertMovie(movies: List<Result>)
 
     suspend fun deleteAllMovies()
 }
