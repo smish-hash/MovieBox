@@ -3,11 +3,13 @@ package com.example.moviebox.di
 import com.example.moviebox.data.api.CastAndCrewApi
 import com.example.moviebox.data.api.MovieListApi
 import com.example.moviebox.data.api.MovieReviewApi
-import com.example.moviebox.data.repository.CastAndCrewRepository
+import com.example.moviebox.data.repository.networkrepository.CastAndCrewRepository
 import com.example.moviebox.data.api.MovieDetailApi
-import com.example.moviebox.data.repository.MovieDetailRepository
-import com.example.moviebox.data.repository.MovieListRepository
-import com.example.moviebox.data.repository.MovieReviewRepository
+import com.example.moviebox.data.dao.MovieDao
+import com.example.moviebox.data.repository.localrepository.OfflineMoviesRepository
+import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
+import com.example.moviebox.data.repository.networkrepository.MovieListRepository
+import com.example.moviebox.data.repository.networkrepository.MovieReviewRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,5 +50,13 @@ object RepositoryModule {
         movieReviewApi: MovieReviewApi
     ): MovieReviewRepository {
         return MovieReviewRepository(movieReviewApi)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOfflineMoviesRepository(
+        movieDao: MovieDao
+    ): OfflineMoviesRepository {
+        return OfflineMoviesRepository(movieDao)
     }
 }

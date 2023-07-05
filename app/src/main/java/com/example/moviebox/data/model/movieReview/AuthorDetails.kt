@@ -9,7 +9,7 @@ data class AuthorDetails(
     @SerializedName("name")
     val name: String? = null,
     @SerializedName("rating")
-    val rating: Int? = null,
+    val rating: Double? = null,
     @SerializedName("username")
     val username: String? = null
 )
