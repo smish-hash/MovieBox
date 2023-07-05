@@ -12,7 +12,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.moviebox.base.BaseFragmentBinding
-import com.example.moviebox.data.model.movielist.MovieListModel
 import com.example.moviebox.data.model.movielist.Result
 import com.example.moviebox.databinding.FragmentMovieListBinding
 import com.example.moviebox.ui.screen.ErrorOrEmpty
@@ -65,10 +64,10 @@ class MovieListFragment :
                             isRefreshing = refreshing,
                             refreshState = pullRefreshState,
                             onMovieClicked = { movie ->
-                                movie?.let {
+                                movie?.let {res ->
                                     val action =
                                         MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(
-                                            it.id ?: -1
+                                            res.id ?: -1, res.title.toString()
                                         )
                                     findNavController().navigate(action)
                                 }

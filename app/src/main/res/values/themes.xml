@@ -7,5 +7,8 @@
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.MovieBox</item>
     </style>
-    <style name="Theme.MovieBox" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MovieBox" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/appBarColor</item>
+        <item name="colorPrimaryVariant">@color/appBarVariant</item>
+    </style>
 </resources>
