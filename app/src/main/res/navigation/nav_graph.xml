@@ -17,10 +17,12 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.moviebox.ui.screen.MovieSynopsis.MovieDetailFragment"
-        android:label="Movie Synopsis"
         tools:layout="@layout/fragment_movie_detail">
         <argument
             android:name="movieId"
             app:argType="integer" />
+        <argument
+            android:name="movieTitle"
+            app:argType="string" />
     </fragment>
 </navigation>

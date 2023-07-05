@@ -23,6 +23,10 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>() {
         setupActionBarWithNavController(navController)
     }
 
+    fun updateTitle(title: String) {
+        supportActionBar?.title = title
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }

@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="appBarColor">#1F1C2C</color>
+    <color name="appBarVariant">#A5BDC8</color>
+    <color name="bmsred">#DC4F4F</color>
 </resources>
