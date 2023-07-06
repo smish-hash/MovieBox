@@ -1,13 +1,14 @@
 package com.example.moviebox.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.moviebox.data.dao.MovieDao
-import com.example.moviebox.data.dao.MovieDetailsDao
 import com.example.moviebox.data.db.MovieListDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -27,10 +28,5 @@ object DatabaseModule {
     @Provides
     fun provideMovieDao(db: MovieListDatabase): MovieDao {
         return db.getMovieDao()
-    }
-
-    @Provides
-    fun provideMovieDetailsDao(db: MovieListDatabase): MovieDetailsDao {
-        return db.getMovieDetailDao()
     }
 }
