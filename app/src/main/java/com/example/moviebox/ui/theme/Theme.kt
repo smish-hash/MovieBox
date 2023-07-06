@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import dagger.hilt.android.internal.managers.ViewComponentManager
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -56,7 +57,8 @@ fun MovieBoxTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
+            val mContext = if (view.context is ViewComponentManager.FragmentContextWrapper) (view.context as ViewComponentManager.FragmentContextWrapper).baseContext else view.context
+            val window = (mContext as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }

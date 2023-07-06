@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.moviebox.MainActivity
 import com.example.moviebox.base.BaseFragmentBinding
 import com.example.moviebox.data.model.MovieSynopsisModel
 import com.example.moviebox.databinding.FragmentMovieDetailBinding
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class MovieDetailFragment : BaseFragmentBinding<FragmentMovieDetailBinding>(FragmentMovieDetailBinding::inflate) {
 
     private var movieId: Int? = null
+    private var movieTitle: String? = null
     private val movieSynopsisViewModel: MovieSynopsisViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,6 +30,11 @@ class MovieDetailFragment : BaseFragmentBinding<FragmentMovieDetailBinding>(Frag
         // we get the movieID here
         arguments?.let {
             movieId = it.getInt("movieId")
+            movieTitle = it.getString("movieTitle")
+        }
+
+        movieTitle?.let {
+            (requireActivity() as MainActivity).updateTitle(it)
         }
 
         movieId?.let {
