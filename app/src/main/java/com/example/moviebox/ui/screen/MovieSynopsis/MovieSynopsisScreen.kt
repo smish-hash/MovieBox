@@ -32,9 +32,9 @@ fun MovieSynopsisScreen(movieSynopsis: MovieSynopsisModel, onBookTicketClicked: 
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 64.dp)
         ) {
-            MovieDetail(movieSynopsis.movieDetail)
-            CastAndCrew(movieSynopsis.movieCastCrew)
-            MovieReview(movieSynopsis.movieReview)
+            movieSynopsis.movieDetail?.let { MovieDetail(it) }
+            movieSynopsis.movieCastCrew?.let { CastAndCrew(it) }
+            movieSynopsis.movieReview?.let { MovieReview(it) }
         }
 
         Surface(

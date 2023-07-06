@@ -6,6 +6,8 @@ import com.example.moviebox.data.api.MovieReviewApi
 import com.example.moviebox.data.repository.networkrepository.CastAndCrewRepository
 import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.dao.MovieDao
+import com.example.moviebox.data.dao.MovieDetailsDao
+import com.example.moviebox.data.repository.localrepository.moviedetails.OfflineMovieDetailsRepository
 import com.example.moviebox.data.repository.localrepository.OfflineMoviesRepository
 import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
 import com.example.moviebox.data.repository.networkrepository.MovieListRepository
@@ -58,5 +60,13 @@ object RepositoryModule {
         movieDao: MovieDao
     ): OfflineMoviesRepository {
         return OfflineMoviesRepository(movieDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieDetailsRepository(
+        movieDetailsDao: MovieDetailsDao
+    ): OfflineMovieDetailsRepository {
+        return OfflineMovieDetailsRepository(movieDetailsDao)
     }
 }
