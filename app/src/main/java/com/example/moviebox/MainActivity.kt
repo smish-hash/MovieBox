@@ -1,6 +1,5 @@
 package com.example.moviebox
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.OnApplyWindowInsetsListener
@@ -39,7 +38,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), OnApplyWindowIn
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
-        var gestureLeft = 0
+        /*var gestureLeft = 0
         if (Build.VERSION.SDK_INT >= 29) {
             gestureLeft = this.window.decorView.rootWindowInsets.systemGestureInsets.left
         }
@@ -51,7 +50,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), OnApplyWindowIn
             // Uses gesture type navigation
             showSmallToast("use gesture")
         }
-        return insets
+        return insets*/
     }
 
 }
