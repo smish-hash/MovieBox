@@ -22,7 +22,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,11 +35,6 @@ class MovieSynopsisViewModel @Inject constructor(
     private val movieReviewRepository: MovieReviewRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
-
-//    private val _isRefreshing = MutableStateFlow(false)
-//
-//    val isRefreshing: StateFlow<Boolean>
-//        get() = _isRefreshing.asStateFlow()
 
     private val _movieDetailState = MutableStateFlow<ScreenState>(ScreenState.Empty)
     val movieDetailState: StateFlow<ScreenState> = _movieDetailState
@@ -50,19 +47,18 @@ class MovieSynopsisViewModel @Inject constructor(
         _movieId.value = movieId
     }
 
-    init {
-        observeOfflineMovie()
-    }
     fun fetchMovieSynopsis() {
         viewModelScope.launch {
             try {
                 if (hasInternetConnection(context)) {
                     val result = performSynopsisCall()
-                    result.movieDetail?.let { saveMovieDetail(it) }
                     _movieDetailState.value = ScreenState.Success(result)
+                    result.movieDetail?.let { saveMovieDetail(it) }
                 } else {
-
-                    _movieDetailState.value = ScreenState.Error("No internet connection")
+                    // check db
+                    _movieId.value?.let {
+                        getMovieDetailFromDB(it)
+                    }
                 }
             } catch (e: Exception) {
                 onErrorOccurred(e.localizedMessage)
@@ -86,36 +82,42 @@ class MovieSynopsisViewModel @Inject constructor(
     }
 
     private suspend fun fetchMovieDetails(): MovieDetailModel {
-        val movieDetail= _movieId.value?.let { movieDetailRepository.getMovieDetail(it) }
+        val movieDetail = withContext(Dispatchers.IO) {
+            _movieId.value?.let { movieDetailRepository.getMovieDetail(it) }
+        }
         return movieDetail ?: MovieDetailModel()
     }
 
     private suspend fun fetchCastAndCrew(): CastAndCrewModel {
-        val movieCastAndCrew = _movieId.value?.let {movieCastAndCrewRepository.getCastAndCrew(it)}
+        val movieCastAndCrew = withContext(Dispatchers.IO){
+            _movieId.value?.let {movieCastAndCrewRepository.getCastAndCrew(it)}
+        }
         return movieCastAndCrew ?: CastAndCrewModel()
     }
 
     private suspend fun fetchMovieReviews(): MovieReviewModel {
-        val movieReview = _movieId.value?.let { movieReviewRepository.getMovieReview(it)}
+        val movieReview = withContext(Dispatchers.IO) {
+            _movieId.value?.let {movieReviewRepository.getMovieReview(it)}
+        }
         return movieReview ?: MovieReviewModel()
     }
 
 
     private fun onErrorOccurred(error: String?) {
         _movieDetailState.value = ScreenState.Error(error ?: "Unknown Error Occurred")
-//        _isRefreshing.emit(false)
     }
 
     private suspend fun saveMovieDetail(movieDetails: MovieDetailModel) {
         offlineMovieDetailsRepository.insertMovieDetail(movieDetails)
     }
-    private fun observeOfflineMovie(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _movieId.value?.let {
-                offlineMovieDetailsRepository.getMovieDetails(it).collect{detail ->
-                    _movieDetailState.value = ScreenState.Success(MovieSynopsisModel(movieDetail = detail))
-                }
-            }
+
+    private suspend fun getMovieDetailFromDB(movieId: Int) {
+        val movie = offlineMovieDetailsRepository.getMovieDetails(movieId).firstOrNull()
+        // movie review
+        if (movie != null) {
+            _movieDetailState.value = ScreenState.Success(MovieSynopsisModel(movieDetail = movie))
+        } else {
+            _movieDetailState.value = ScreenState.Error("No internet connection")
         }
     }
 }
