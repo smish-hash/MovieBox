@@ -9,6 +9,7 @@ import com.example.moviebox.data.model.MovieSynopsisModel
 import com.example.moviebox.data.model.castcrew.CastAndCrewModel
 import com.example.moviebox.data.model.movieReview.MovieReviewModel
 import com.example.moviebox.data.model.moviedetail.MovieDetailModel
+import com.example.moviebox.data.repository.localrepository.moviedetails.OfflineMovieDetailsRepository
 import com.example.moviebox.data.repository.networkrepository.CastAndCrewRepository
 import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
 import com.example.moviebox.data.repository.networkrepository.MovieReviewRepository
@@ -16,6 +17,7 @@ import com.example.moviebox.ui.state.ScreenState
 import com.example.moviebox.util.NetworkUtil.Companion.hasInternetConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,11 +27,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieSynopsisViewModel @Inject constructor(
+    private val offlineMovieDetailsRepository: OfflineMovieDetailsRepository,
     private val movieDetailRepository: MovieDetailRepository,
     private val movieCastAndCrewRepository: CastAndCrewRepository,
     private val movieReviewRepository: MovieReviewRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
+
+//    private val _isRefreshing = MutableStateFlow(false)
+//
+//    val isRefreshing: StateFlow<Boolean>
+//        get() = _isRefreshing.asStateFlow()
 
     private val _movieDetailState = MutableStateFlow<ScreenState>(ScreenState.Empty)
     val movieDetailState: StateFlow<ScreenState> = _movieDetailState
@@ -42,13 +50,18 @@ class MovieSynopsisViewModel @Inject constructor(
         _movieId.value = movieId
     }
 
+    init {
+        observeOfflineMovie()
+    }
     fun fetchMovieSynopsis() {
         viewModelScope.launch {
             try {
                 if (hasInternetConnection(context)) {
                     val result = performSynopsisCall()
+                    result.movieDetail?.let { saveMovieDetail(it) }
                     _movieDetailState.value = ScreenState.Success(result)
                 } else {
+
                     _movieDetailState.value = ScreenState.Error("No internet connection")
                 }
             } catch (e: Exception) {
@@ -90,5 +103,19 @@ class MovieSynopsisViewModel @Inject constructor(
 
     private fun onErrorOccurred(error: String?) {
         _movieDetailState.value = ScreenState.Error(error ?: "Unknown Error Occurred")
+//        _isRefreshing.emit(false)
+    }
+
+    private suspend fun saveMovieDetail(movieDetails: MovieDetailModel) {
+        offlineMovieDetailsRepository.insertMovieDetail(movieDetails)
+    }
+    private fun observeOfflineMovie(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _movieId.value?.let {
+                offlineMovieDetailsRepository.getMovieDetails(it).collect{detail ->
+                    _movieDetailState.value = ScreenState.Success(MovieSynopsisModel(movieDetail = detail))
+                }
+            }
+        }
     }
 }
