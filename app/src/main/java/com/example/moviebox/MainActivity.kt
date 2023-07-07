@@ -49,8 +49,8 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), OnApplyWindowIn
         } else {
             // Uses gesture type navigation
             showSmallToast("use gesture")
-        }
-        return insets*/
+        }*/
+        return insets
     }
 
 }
