@@ -59,8 +59,9 @@ class MovieSynopsisViewModel @Inject constructor(
                 if (hasInternetConnection(context)) {
                     val result = performSynopsisCall()
                     result.movieDetail?.let { saveMovieDetail(it) }
-//                    _movieDetailState.value = ScreenState.Success(result)
+                    _movieDetailState.value = ScreenState.Success(result)
                 } else {
+
                     _movieDetailState.value = ScreenState.Error("No internet connection")
                 }
             } catch (e: Exception) {
