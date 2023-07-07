@@ -56,8 +56,9 @@ fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
             ),
             modifier = modifier.padding(horizontal = 16.dp)
         )
+        val cast: List<Cast> = if (members.size > 10) members.subList(0, 10) else members
         LazyRow {
-            items(members.subList(0, 10)) {
+            items(cast) {
                 CastCard(it, modifier)
             }
         }
@@ -67,7 +68,6 @@ fun CastComponent(modifier: Modifier, text: String, members: List<Cast>) {
 
 @Composable
 fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
-
     Column(
         modifier = modifier
             .padding(vertical = 16.dp)
@@ -79,7 +79,8 @@ fun CrewComponent(modifier: Modifier, text: String, members: List<Crew>) {
             ),
             modifier = modifier.padding(horizontal = 16.dp))
         LazyRow{
-            items(members.subList(0, 10)) {
+            val crew: List<Crew> = if (members.size > 10) members.subList(0, 10) else members
+            items(crew) {
                 CrewCard(it, modifier)
             }
         }
