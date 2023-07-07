@@ -1,8 +1,10 @@
 package com.example.moviebox.data.model.movieReview
 
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "reviewresult")
 data class Result(
     @SerializedName("author")
     val author: String? = null,

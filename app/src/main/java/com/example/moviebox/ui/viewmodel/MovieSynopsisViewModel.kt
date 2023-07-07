@@ -10,6 +10,7 @@ import com.example.moviebox.data.model.castcrew.CastAndCrewModel
 import com.example.moviebox.data.model.movieReview.MovieReviewModel
 import com.example.moviebox.data.model.moviedetail.MovieDetailModel
 import com.example.moviebox.data.repository.localrepository.moviedetails.OfflineMovieDetailsRepository
+import com.example.moviebox.data.repository.localrepository.moviereview.OfflineMovieReviewsRepository
 import com.example.moviebox.data.repository.networkrepository.CastAndCrewRepository
 import com.example.moviebox.data.repository.networkrepository.MovieDetailRepository
 import com.example.moviebox.data.repository.networkrepository.MovieReviewRepository
@@ -29,6 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieSynopsisViewModel @Inject constructor(
+    private val offlineMovieReviewsRepository: OfflineMovieReviewsRepository,
     private val offlineMovieDetailsRepository: OfflineMovieDetailsRepository,
     private val movieDetailRepository: MovieDetailRepository,
     private val movieCastAndCrewRepository: CastAndCrewRepository,
@@ -36,8 +38,8 @@ class MovieSynopsisViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ): ViewModel() {
 
-    private val _movieDetailState = MutableStateFlow<ScreenState>(ScreenState.Empty)
-    val movieDetailState: StateFlow<ScreenState> = _movieDetailState
+    private val _movieSynopsisState = MutableStateFlow<ScreenState>(ScreenState.Empty)
+    val movieDetailState: StateFlow<ScreenState> = _movieSynopsisState
 
     private val _movieId = MutableLiveData<Int>()
     val movieId: LiveData<Int>
@@ -52,8 +54,9 @@ class MovieSynopsisViewModel @Inject constructor(
             try {
                 if (hasInternetConnection(context)) {
                     val result = performSynopsisCall()
-                    _movieDetailState.value = ScreenState.Success(result)
+                    _movieSynopsisState.value = ScreenState.Success(result)
                     result.movieDetail?.let { saveMovieDetail(it) }
+                    result.movieReview?.let { saveMovieReview(it) }
                 } else {
                     // check db
                     _movieId.value?.let {
@@ -65,6 +68,7 @@ class MovieSynopsisViewModel @Inject constructor(
             }
         }
     }
+
     private suspend fun performSynopsisCall(): MovieSynopsisModel = coroutineScope {
 
         val resDetails = async { fetchMovieDetails() }
@@ -104,20 +108,28 @@ class MovieSynopsisViewModel @Inject constructor(
 
 
     private fun onErrorOccurred(error: String?) {
-        _movieDetailState.value = ScreenState.Error(error ?: "Unknown Error Occurred")
+        _movieSynopsisState.value = ScreenState.Error(error ?: "Unknown Error Occurred")
     }
 
     private suspend fun saveMovieDetail(movieDetails: MovieDetailModel) {
-        offlineMovieDetailsRepository.insertMovieDetail(movieDetails)
+        viewModelScope.launch(Dispatchers.IO) {
+            offlineMovieDetailsRepository.insertMovieDetail(movieDetails)
+        }
+    }
+
+    private suspend fun saveMovieReview(movieReviews: MovieReviewModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            offlineMovieReviewsRepository.insertMovieReviews(movieReviews)
+        }
     }
 
     private suspend fun getMovieDetailFromDB(movieId: Int) {
         val movie = offlineMovieDetailsRepository.getMovieDetails(movieId).firstOrNull()
-        // movie review
-        if (movie != null) {
-            _movieDetailState.value = ScreenState.Success(MovieSynopsisModel(movieDetail = movie))
+        val review = offlineMovieReviewsRepository.getMovieReviews(movieId).firstOrNull()
+        if (movie != null && review !=null) {
+            _movieSynopsisState.value = ScreenState.Success(MovieSynopsisModel(movieDetail = movie, movieReview = review))
         } else {
-            _movieDetailState.value = ScreenState.Error("No internet connection")
+            _movieSynopsisState.value = ScreenState.Error("No internet connection")
         }
     }
 }
