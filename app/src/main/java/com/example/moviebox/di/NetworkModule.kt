@@ -5,12 +5,12 @@ import com.example.moviebox.data.api.MovieDetailApi
 import com.example.moviebox.data.api.MovieListApi
 import com.example.moviebox.data.api.MovieReviewApi
 import com.example.moviebox.util.Constants
+import com.pluto.plugins.network.PlutoInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -19,9 +19,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private val interceptor = HttpLoggingInterceptor()
-        .setLevel(HttpLoggingInterceptor.Level.BODY)
-    private val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    /*private val interceptor = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)*/
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(PlutoInterceptor())
+        .build()
 
     @Provides
     @Singleton
