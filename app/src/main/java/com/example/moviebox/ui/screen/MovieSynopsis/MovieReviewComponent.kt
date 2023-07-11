@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,11 +69,11 @@ fun AddMovieReview() {
                 .padding(10.dp)
                 .fillMaxWidth()
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
                 Text("Add your rating and review", style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 14.sp))
                 Text("Your ratings matter", style = TextStyle(fontSize = 10.sp))
             }
-            Spacer(modifier = Modifier.padding(horizontal = 40.dp))
+//            Spacer(modifier = Modifier.padding(horizontal = 40.dp))
             OutlinedButton(
                 onClick = { },
                 border = BorderStroke(1.dp, Color.Red),
@@ -228,8 +227,14 @@ fun ReviewCard(review: Result) {
 
 @Preview(showBackground = true)
 @Composable
-fun previewReviewCardScreen(){
+fun PreviewReviewCardScreen(){
     ReviewCard(Result())
+}
+
+@Preview
+@Composable
+fun AddMovieReviewPreview() {
+    AddMovieReview()
 }
 
 
