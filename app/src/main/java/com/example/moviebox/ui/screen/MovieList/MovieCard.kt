@@ -172,8 +172,38 @@ fun MovieCard(
 @Preview(showBackground = true)
 @Composable
 fun MovieCardPreview() {
-    MovieCard(
-        onMovieClick = {},
-        movie = Result(title = "Spiderman: Beyond the spider verse")
-    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(color = LightBlue)
+            .heightIn(28.dp)
+            .padding(vertical = 3.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            Icons.Rounded.Star,
+            contentDescription = null,
+            tint = PinkSecondary,
+            modifier = Modifier
+                .padding(start = 6.dp, end = 3.dp)
+                .size(20.dp)
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = "2.4",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            modifier = Modifier.padding(end = 6.dp),
+            text = "23 votes",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
 }
